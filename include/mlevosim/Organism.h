@@ -21,6 +21,11 @@ public:
         Organism::id++;
     }
 
+    Organism* clone()
+    {
+        return new Organism(*this);
+    }
+
     void provideInput()
     {
         this->log("Input Provided for organism #" + std::to_string(this->selfId));

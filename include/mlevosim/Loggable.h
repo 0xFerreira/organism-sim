@@ -9,6 +9,8 @@ class Loggable
 private:
     std::function<void(const std::string&)> logCallback = nullptr;
 protected:
+    virtual ~Loggable() {}
+
     void log(const std::string& info)
     {
         if(this->logCallback != nullptr) {

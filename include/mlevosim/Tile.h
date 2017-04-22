@@ -1,7 +1,8 @@
 #ifndef _TileClass_
 #define _TileClass_
 
-class Tile
+#include "mlevosim/Tickable.h"
+class Tile : public Tickable
 {
 private:
 protected:
@@ -33,6 +34,17 @@ public:
 
     unsigned int getEnergyRegen()                         {return this->energyRegen;}
     void         setEnergyRegen(unsigned int energyRegen) {this->energyRegen = energyRegen;}
+
+    void nextTick()
+    {
+        if(this->energy < this->maxEnergy) {
+            if(this->energy + this->energyRegen > this->maxEnergy) {
+                this->energy = this->maxEnergy;
+            } else {
+                this->energy += this->energyRegen;
+            }
+        }
+    }
 };
 
 #endif //_TileClass_
