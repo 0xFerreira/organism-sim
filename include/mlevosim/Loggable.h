@@ -1,6 +1,8 @@
 #ifndef _LoggableClass_
 #define _LoggableClass_
 
+#include <functional>
+
 class Loggable
 {
 private:
@@ -8,7 +10,8 @@ private:
 protected:
     void log(const std::string& info)
     {
-        this->logCallback(info);
+        if(this->logCallback != nullptr)
+            this->logCallback(info);
     }
 public:
     void registerLogCallback(std::function<void(const std::string&)> lambda)
