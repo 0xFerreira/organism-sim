@@ -2,6 +2,7 @@
 #define _LoggableClass_
 
 #include <functional>
+#include <iostream>
 
 class Loggable
 {
@@ -10,8 +11,11 @@ private:
 protected:
     void log(const std::string& info)
     {
-        if(this->logCallback != nullptr)
+        if(this->logCallback != nullptr) {
             this->logCallback(info);
+        } else {
+            std::cout << info << std::endl;
+        }
     }
 public:
     void registerLogCallback(std::function<void(const std::string&)> lambda)
