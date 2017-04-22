@@ -36,6 +36,10 @@ public:
         }
     }
 
+    Tile* tile(unsigned int x, unsigned int y)
+    {
+        return this->tiles[x][y];
+    }
 };
 
 #endif //_WorldClass_

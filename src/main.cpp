@@ -16,6 +16,7 @@ int main(int argc, char** argv)
     });
 
     world->populate();
+
     org->provideInput();
 
     return 1;
