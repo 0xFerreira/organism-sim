@@ -5,8 +5,8 @@
 #include <cassert>
 #include <string>
 
-#include "mlevosim/Loggable.h"
-#include "mlevosim/Tickable.h"
+#include "mlevosim/Composable/Loggable.h"
+#include "mlevosim/Composable/Tickable.h"
 
 #include "mlevosim/Tile.h"
 

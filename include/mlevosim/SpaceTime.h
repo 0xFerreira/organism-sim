@@ -4,7 +4,7 @@
 #include <vector>
 #include <map>
 
-#include "mlevosim/Loggable.h"
+#include "mlevosim/Composable/Loggable.h"
 
 #include "mlevosim/World.h"
 #include "mlevosim/Organism.h"

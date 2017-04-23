@@ -3,8 +3,8 @@
 
 #include <string>
 
-#include "mlevosim/Loggable.h"
-#include "mlevosim/Tickable.h"
+#include "mlevosim/Composable/Loggable.h"
+#include "mlevosim/Composable/Tickable.h"
 
 class Organism : public Loggable, public Tickable
 {
