@@ -59,10 +59,6 @@ public:
         for(Organism* organism : state->organisms) {
             organismShape.setFillColor(sf::Color::Black);
             organismShape.setPosition({14.0f + 26.f*organism->x, 8.0f + 26.f*organism->y});
-            unsigned int tileEnergy = state->world->tile(organism->x, organism->y)->getEnergy();
-            if(tileEnergy > 1) {
-                state->world->tile(organism->x, organism->y)->setEnergy(tileEnergy-1);
-            }
             window->draw(organismShape);
         }
         window->display();

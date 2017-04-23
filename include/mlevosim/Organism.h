@@ -39,16 +39,17 @@ public:
     {
         std::random_device rd;
         std::mt19937 mt(rd());
-        std::uniform_real_distribution<float> dist(0, 6);
-        if(dist(mt) > 3 && this->x > 1) {
+        std::uniform_real_distribution<float> dist(0, 9);
+        float random = dist(mt);
+        if(random > 6 && this->x > 1) {
             this->x += -1;
-        } else if(this->x < 47) {
+        } else if(random > 3 &&this->x < 47) {
             this->x += 1;
         }
-
-        if(dist(mt) > 3 && this->y > 1) {
+        random = dist(mt);
+        if(random > 6 && this->y > 1) {
             this->y += -1;
-        } else if(this->y < 26) {
+        } else if(random > 3 && this->y < 26) {
             this->y += 1;
         }
         this->log("nextTick for organism #" + std::to_string(this->selfId));

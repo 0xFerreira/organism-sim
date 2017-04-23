@@ -57,7 +57,10 @@ public:
 
         for(Organism* org : newOrganisms) {
             org->nextTick();
+            unsigned int tileEnergy = newWorld->tile(org->x, org->y)->getEnergy();
+            newWorld->tile(org->x, org->y)->setEnergy(tileEnergy*0.75);
         }
+
 
         this->states[this->currentState+1].world = newWorld;
         this->states[this->currentState+1].organisms = newOrganisms;
