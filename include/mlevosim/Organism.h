@@ -4,8 +4,9 @@
 #include <string>
 
 #include "mlevosim/Loggable.h"
+#include "mlevosim/Tickable.h"
 
-class Organism : public Loggable
+class Organism : public Loggable, public Tickable
 {
 private:
     static int id;
@@ -31,9 +32,9 @@ public:
         this->log("Input Provided for organism #" + std::to_string(this->selfId));
     }
 
-    void tick()
+    void nextTick()
     {
-
+        this->log("nextTick for organism #" + std::to_string(this->selfId));
     }
 };
 int Organism::id = 1;

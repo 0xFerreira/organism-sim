@@ -6,13 +6,13 @@ class Tile : public Tickable
 {
 private:
 protected:
-    unsigned int energy = 100;
+    unsigned int energy = 50;
     unsigned int minEnergy = 0;
     unsigned int maxEnergy = 100;
     unsigned int energyRegen = 1;
 
 public:
-    Tile(unsigned int energy = 100,
+    Tile(unsigned int energy = 50,
          unsigned int minEnergy = 0,
          unsigned int maxEnergy = 100,
          unsigned int energyRegen = 1)

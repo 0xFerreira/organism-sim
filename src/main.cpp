@@ -10,7 +10,7 @@
 #define WORLD_HEIGHT 10
 #define ORGANISM_START_COUNT 5
 
-int main(int argc, char** argv)
+SpaceTime* buildSpaceTime()
 {
     SpaceTime* spaceTime = new SpaceTime();
 
@@ -23,19 +23,27 @@ int main(int argc, char** argv)
 
     std::vector<Organism*> organisms;
 
+    for(unsigned int i=0;i<ORGANISM_START_COUNT;i++) {
+        Organism* org = new Organism();
+        org->registerLogCallback([](const std::string& info) {
+            Logger::write("[Organism] " + info);
+        });
 
-    Organism* org = new Organism();
-    org->registerLogCallback([](const std::string& info) {
-        Logger::write("[Organism] " + info);
-    });
-
-    organisms.push_back(org);
-    for(unsigned int i=0;i<ORGANISM_START_COUNT-1;i++) {
-        organisms.push_back(org->clone());
+        organisms.push_back(org);
     }
 
-    //spaceTime->registerWorld(world);
-    //spaceTime->registerOrganisms();
+    spaceTime->registerWorld(world);
+    spaceTime->registerOrganisms(organisms);
+
+    return spaceTime;
+}
+
+int main(int argc, char** argv)
+{
+
+    SpaceTime* sT = buildSpaceTime();
+
+    sT->nextTick();
 
     return 1;
 }
