@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "mlevosim/Viewer.h"
+#include "mlevosim/Viewer/Viewer.h"
 
 class TwoDimensionsViewer : public  Viewer
 {

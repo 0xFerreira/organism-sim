@@ -3,7 +3,8 @@
 
 #include "mlevosim/Logger.h"
 
-#include "mlevosim/TwoDimensionsViewer.h"
+#include "mlevosim/Viewer/TwoDimensionsViewer.h"
+#include "mlevosim/Viewer/NoViewer.h"
 
 #include "mlevosim/SpaceTime.h"
 #include "mlevosim/World.h"
@@ -56,6 +57,7 @@ int main(int argc, char** argv)
 
     SpaceTime* sT = buildSpaceTime();
     Viewer* viewer = new TwoDimensionsViewer();
+    //Viewer* viewer = new NoViewer();
 
     unsigned long long previous = getCurrentTime();
     unsigned long long lag = 0;
