@@ -18,7 +18,7 @@ public:
     {
         this->running = true;
         this->window = new sf::RenderWindow(sf::VideoMode(1280, 720), "ML Evo Sim");
-        this->window->setFramerateLimit(144);
+        this->window->setFramerateLimit(200);
     }
 
     bool shouldTick()
@@ -60,7 +60,7 @@ public:
         }
     }
 
-    void draw(SpaceTime::State* state)
+    void draw(SpaceTime::State* state, float deltaTime)
     {
         sf::RectangleShape tileShape({25.f, 25.f});
         sf::CircleShape organismShape(12.5f);
@@ -85,7 +85,24 @@ public:
 
         for(Organism* organism : state->organisms) {
             organismShape.setFillColor(sf::Color::Black);
-            organismShape.setPosition({14.0f + 26.f*organism->getPosition().x, 8.0f + 26.f*organism->getPosition().y});
+
+            Vector2i lastPosition = organism->getLastPosition();
+            Vector2i position = organism->getPosition();
+
+            float x = 0.0f;
+            float y = 0.0f;
+            if(!organism->isTransitionDone()) {
+                x = lastPosition.x + (position.x - lastPosition.x)*deltaTime;
+                y = lastPosition.y + (position.y - lastPosition.y)*deltaTime;
+                if(deltaTime > 0.9) {
+                    organism->setTransitionDone();
+                }
+            } else {
+                x =  position.x;
+                y =  position.y;
+            }
+
+            organismShape.setPosition({14.0f + 26.f*x, 8.0f + 26.f*y});
             window->draw(organismShape);
         }
         window->display();

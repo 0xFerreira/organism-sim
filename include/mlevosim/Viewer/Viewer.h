@@ -10,7 +10,7 @@ protected:
     Viewer() {}
     ~Viewer() {}
 public:
-    virtual void draw(SpaceTime::State* state) = 0;
+    virtual void draw(SpaceTime::State* state, float deltaTime) = 0;
     virtual bool isRunning() = 0;
     virtual void processInput() = 0;
     virtual bool shouldTick() = 0;

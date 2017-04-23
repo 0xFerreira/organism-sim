@@ -113,7 +113,8 @@ int main(int argc, char** argv)
             lag -= MS_PER_UPDATE;
         }
 
-        viewer->draw(sT->now());
+        float deltaTime = (float)lag/(float)MS_PER_UPDATE;
+        viewer->draw(sT->now(), deltaTime);
     }
 
     return 1;

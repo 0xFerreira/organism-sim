@@ -37,8 +37,9 @@ public:
 
     }
 
-    void draw(SpaceTime::State* state)
+    void draw(SpaceTime::State* state, float deltaTime)
     {
+
     }
 };
 
