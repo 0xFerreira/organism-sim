@@ -32,6 +32,11 @@ public:
         this->organismShape = sf::CircleShape(12.5f);
     }
 
+    void draw(TimeTravel::State* state)
+    {
+
+    }
+/*
     void run()
     {
         unsigned long long previous = Time::getCurrentTime();
@@ -50,9 +55,9 @@ public:
             {
                 if(this->shouldTick) {
                     if(this->fowardInTime) {
-                        this->spaceTime->foward();
+                        this->timeTravel->foward();
                     } else {
-                        this->spaceTime->backward();
+                        this->timeTravel->backward();
                     }
 
                     this->shouldTick = false;
@@ -88,7 +93,7 @@ public:
     {
         window->clear();
 
-        auto tiles = this->spaceTime->now()->world->getTiles();
+        auto tiles = this->timeTravel->now()->world->getTiles();
 
         unsigned int x = 0;
         unsigned int y = 0;
@@ -104,7 +109,7 @@ public:
             x++;
         }
 
-        for(Organism* organism : this->spaceTime->now()->organisms) {
+        for(Organism* organism : this->timeTravel->now()->organisms) {
             this->organismShape.setFillColor(sf::Color::Black);
 
             Vector2i lastPosition = organism->getLastPosition();
@@ -128,6 +133,7 @@ public:
         }
         window->display();
     }
+*/
 };
 
 #endif //_TwoDimensionsViewerClass_

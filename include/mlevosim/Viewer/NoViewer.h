@@ -8,15 +8,8 @@ class NoViewer : public  Viewer
 private:
 protected:
 public:
-    NoViewer()
+    void draw(TimeTravel::State* state)
     {
-    }
-
-    void run()
-    {
-        while(true) {
-            this->spaceTime->foward();
-        }
 
     }
 };

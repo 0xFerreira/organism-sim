@@ -5,16 +5,16 @@
 #include "mlevosim/Viewer/TwoDimensionsViewer.h"
 #include "mlevosim/Viewer/NoViewer.h"
 
-#include "mlevosim/Core/SpaceTime.h"
+#include "mlevosim/Core/TimeTravel.h"
 #include "mlevosim/Core/World.h"
 #include "mlevosim/Core/Organism.h"
 
 #define WORLD_WIDTH 48
 #define WORLD_HEIGHT 27
-#define ORGANISM_START_COUNT 5
+#define ORGANISM_START_COUNT 10
 
 /* Code Quality & Refactoring */
-//Move time control from main to twoDimensionsViewer
+//Move time control from main
 //Add and work with namespaces
 //Move organism logic to brain class and polymorphics
 //Check warnings and static analysis
@@ -42,13 +42,41 @@
 //Check simd operations, only using 1 of 4 cores right now
 //Check openCL or nvidia alternative
 
+// int main(int argc, char** argv)
+// {
+//     Universe* universe = new Universe();
+//     Pyshics*  physics  = new AsapPhysics();
+//     Entities* entities = new Entities();
+//     Creator*  creator  = new SimpleCreator();
+//     Viewer*   viewer   = new TwoDimensionsViewer();
+
+//     creator->registerEntityRegister([](Entity* entity){
+//         entities->registerEntity(entity);
+//     });
+
+//     physics->registerEntities(entities);
+
+//     universe->registerPhysics(physics);
+
+//     universe->simulate();
+
+//     return 0;
+// }
+
+/*
+    const double alpha = accumulator / dt;
+
+    State state = currentState * alpha +
+        previousState * ( 1.0 - alpha );
+*/
 
 int main(int argc, char** argv)
 {
 
-    SpaceTime* spaceTime = new SpaceTime();
-    spaceTime->registerLogCallback([](const std::string& info) {
-        Logger::write("[SpaceTime] " + info);
+    TimeTravel* timeTravel = new TimeTravel();
+
+    timeTravel->registerLogCallback([](const std::string& info) {
+        Logger::write("[TimeTravel] " + info);
     });
 
     World* world = new World(WORLD_WIDTH, WORLD_HEIGHT);
@@ -69,13 +97,12 @@ int main(int argc, char** argv)
         organisms.push_back(org);
     }
 
-    spaceTime->registerWorld(world);
-    spaceTime->registerOrganisms(organisms);
+    timeTravel->registerWorld(world);
+    timeTravel->registerOrganisms(organisms);
 
     Viewer* viewer = new TwoDimensionsViewer();
-    viewer->registerSpaceTime(spaceTime);
 
-    viewer->run();
+    viewer->draw(timeTravel->now());
 
     return 1;
 }

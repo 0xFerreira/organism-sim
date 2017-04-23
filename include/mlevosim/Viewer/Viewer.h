@@ -1,23 +1,16 @@
 #ifndef _ViewerClass_
 #define _ViewerClass_
 
-#include "mlevosim/Core/SpaceTime.h"
+#include "mlevosim/Core/TimeTravel.h"
 
 class Viewer
 {
 private:
 protected:
-    SpaceTime* spaceTime = nullptr;
-
     Viewer() {}
     ~Viewer() {}
 public:
-    virtual void run() = 0;
-
-    void registerSpaceTime(SpaceTime* spaceTime)
-    {
-        this->spaceTime = spaceTime;
-    }
+    virtual void draw(TimeTravel::State* state) = 0;
 };
 
 #endif //_ViewerClass_

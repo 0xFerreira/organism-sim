@@ -1,5 +1,5 @@
-#ifndef _SpaceTimeClass_
-#define _SpaceTimeClass_
+#ifndef _TimeTravelClass_
+#define _TimeTravelClass_
 
 #include <vector>
 #include <map>
@@ -9,7 +9,7 @@
 #include "mlevosim/Core/World.h"
 #include "mlevosim/Core/Organism.h"
 
-class SpaceTime : public Loggable
+class TimeTravel : public Loggable
 {
 public:
     struct State
@@ -53,7 +53,7 @@ protected:
     }
 
 public:
-    SpaceTime()
+    TimeTravel()
     {
 
     }
@@ -81,7 +81,7 @@ public:
         return totalUsed;
     }
 
-    SpaceTime* backward(unsigned int timeUnit = 1)
+    TimeTravel* backward(unsigned int timeUnit = 1)
     {
         if((int)this->currentState - (int)timeUnit >= 0) {
             this->currentState -= timeUnit;
@@ -92,7 +92,7 @@ public:
         return this;
     }
 
-    SpaceTime* foward(unsigned int timeUnit = 1)
+    TimeTravel* foward(unsigned int timeUnit = 1)
     {
         if(this->currentState + timeUnit <= this->maxState) {
             this->currentState += timeUnit;
@@ -104,17 +104,17 @@ public:
         return this;
     }
 
-    SpaceTime* registerWorld(World* world)
+    TimeTravel* registerWorld(World* world)
     {
         this->now()->world = world;
         return this;
     }
 
-    SpaceTime* registerOrganisms(const std::vector<Organism*>& organisms)
+    TimeTravel* registerOrganisms(const std::vector<Organism*>& organisms)
     {
         this->now()->organisms = organisms;
         return this;
     }
 };
 
-#endif //_SpaceTimeClass_
+#endif //_TimeTravelClass_
