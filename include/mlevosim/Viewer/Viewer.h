@@ -1,7 +1,7 @@
 #ifndef _ViewerClass_
 #define _ViewerClass_
 
-#include "mlevosim/SpaceTime.h"
+#include "mlevosim/Core/SpaceTime.h"
 
 class Viewer
 {

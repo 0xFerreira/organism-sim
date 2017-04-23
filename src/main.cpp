@@ -6,9 +6,9 @@
 #include "mlevosim/Viewer/TwoDimensionsViewer.h"
 #include "mlevosim/Viewer/NoViewer.h"
 
-#include "mlevosim/SpaceTime.h"
-#include "mlevosim/World.h"
-#include "mlevosim/Organism.h"
+#include "mlevosim/Core/SpaceTime.h"
+#include "mlevosim/Core/World.h"
+#include "mlevosim/Core/Organism.h"
 
 #define WORLD_WIDTH 48
 #define WORLD_HEIGHT 27

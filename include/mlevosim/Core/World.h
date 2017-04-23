@@ -8,7 +8,7 @@
 #include "mlevosim/Composable/Loggable.h"
 #include "mlevosim/Composable/Tickable.h"
 
-#include "mlevosim/Tile.h"
+#include "mlevosim/Core/Tile.h"
 
 class World : public Loggable, public Tickable
 {

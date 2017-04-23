@@ -6,8 +6,8 @@
 
 #include "mlevosim/Composable/Loggable.h"
 
-#include "mlevosim/World.h"
-#include "mlevosim/Organism.h"
+#include "mlevosim/Core/World.h"
+#include "mlevosim/Core/Organism.h"
 
 class SpaceTime : public Loggable
 {
