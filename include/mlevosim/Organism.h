@@ -16,6 +16,9 @@ protected:
 
 public:
 
+    unsigned int x = 0;
+    unsigned int y = 0;
+
     Organism()
     {
         this->selfId = Organism::id;
@@ -34,6 +37,20 @@ public:
 
     void nextTick()
     {
+        std::random_device rd;
+        std::mt19937 mt(rd());
+        std::uniform_real_distribution<float> dist(0, 6);
+        if(dist(mt) > 3 && this->x > 1) {
+            this->x += -1;
+        } else if(this->x < 47) {
+            this->x += 1;
+        }
+
+        if(dist(mt) > 3 && this->y > 1) {
+            this->y += -1;
+        } else if(this->y < 26) {
+            this->y += 1;
+        }
         this->log("nextTick for organism #" + std::to_string(this->selfId));
     }
 };

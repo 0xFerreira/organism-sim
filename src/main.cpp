@@ -9,10 +9,10 @@
 #include "mlevosim/World.h"
 #include "mlevosim/Organism.h"
 
-#define WORLD_WIDTH 40
-#define WORLD_HEIGHT 25
+#define WORLD_WIDTH 48
+#define WORLD_HEIGHT 27
 #define ORGANISM_START_COUNT 5
-#define MS_PER_UPDATE 25
+#define MS_PER_UPDATE 100
 
 SpaceTime* buildSpaceTime()
 {

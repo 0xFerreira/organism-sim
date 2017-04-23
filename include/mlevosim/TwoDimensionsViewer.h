@@ -26,7 +26,8 @@ public:
 
     void draw(SpaceTime::State* state)
     {
-        sf::RectangleShape shape({25.f, 25.f});
+        sf::RectangleShape tileShape({25.f, 25.f});
+        sf::CircleShape organismShape(12.5f);
 
 
         sf::Event event;
@@ -45,14 +46,24 @@ public:
         unsigned int y = 0;
         for(auto& row : tiles) {
             y = 0;
-            x++;
             for(auto& tile : row.second) {
-                y++;
                 float energyCapacity = (float)tile.second->getEnergy()/(float)tile.second->getMaxEnergy();
-                shape.setFillColor(sf::Color(255*(1-energyCapacity), 255*energyCapacity, 255*(1-energyCapacity*0.5)));
-                shape.setPosition({5 + 26.f*x, 5 + 26.f*y});
-                window->draw(shape);
+                tileShape.setFillColor(sf::Color(255*(1-energyCapacity), 255*energyCapacity, 255*(1-energyCapacity*0.5)));
+                tileShape.setPosition({14.0f + 26.f*x, 8.0f + 26.f*y});
+                window->draw(tileShape);
+                y++;
             }
+            x++;
+        }
+
+        for(Organism* organism : state->organisms) {
+            organismShape.setFillColor(sf::Color::Black);
+            organismShape.setPosition({14.0f + 26.f*organism->x, 8.0f + 26.f*organism->y});
+            unsigned int tileEnergy = state->world->tile(organism->x, organism->y)->getEnergy();
+            if(tileEnergy > 1) {
+                state->world->tile(organism->x, organism->y)->setEnergy(tileEnergy-1);
+            }
+            window->draw(organismShape);
         }
         window->display();
     }
