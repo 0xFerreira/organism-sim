@@ -78,7 +78,6 @@ public:
                 this->tiles[i][ii]->nextTick();
             }
         }
-        this->log("World and tiles time has advanced");
     }
 };
 

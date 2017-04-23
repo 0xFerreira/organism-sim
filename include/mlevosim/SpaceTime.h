@@ -4,13 +4,12 @@
 #include <vector>
 #include <map>
 
-#include "mlevosim/Tickable.h"
 #include "mlevosim/Loggable.h"
 
 #include "mlevosim/World.h"
 #include "mlevosim/Organism.h"
 
-class SpaceTime : public Loggable, public Tickable
+class SpaceTime : public Loggable
 {
 public:
     struct State
@@ -21,30 +20,11 @@ public:
 private:
 
 protected:
-
     std::map<unsigned int, State> states;
     unsigned int currentState = 0;
-public:
-    SpaceTime()
-    {
+    unsigned int maxState = 0;
 
-    }
-
-    State* now()
-    {
-        return &this->states[this->currentState];
-    }
-    void registerWorld(World* world)
-    {
-        this->now()->world = world;
-    }
-
-    void registerOrganisms(const std::vector<Organism*>& organisms)
-    {
-        this->now()->organisms = organisms;
-    }
-
-    void nextTick()
+    void calculateNextState()
     {
         World* newWorld = this->states[this->currentState].world->clone();
 
@@ -66,8 +46,68 @@ public:
         this->states[this->currentState+1].organisms = newOrganisms;
 
         this->currentState++;
+
+        this->maxState = this->currentState;
+
+        this->log("Calculated tick #" + std::to_string(this->currentState));
     }
 
+public:
+    SpaceTime()
+    {
+
+    }
+
+    State* now()
+    {
+        return &this->states[this->currentState];
+    }
+
+    //Very Naive implementation
+    int usedMemory()
+    {
+        float worldsSize = sizeof(World)*this->currentState;
+        float tilesSize  = sizeof(Tile)*48*27*this->currentState;
+        float organismsSize = sizeof(Organism)*this->now()->organisms.size()*this->currentState;
+        float totalUsed = (organismsSize+tilesSize+worldsSize)/1000000.0f;
+
+        return totalUsed;
+    }
+
+    SpaceTime* backward(unsigned int timeUnit = 1)
+    {
+        if((int)this->currentState - (int)timeUnit >= 0) {
+            this->currentState -= timeUnit;
+        } else {
+            this->currentState = 0;
+        }
+        this->log("SpaceTime set to tick #" + std::to_string(this->currentState));
+        return this;
+    }
+
+    SpaceTime* foward(unsigned int timeUnit = 1)
+    {
+        if(this->currentState + timeUnit <= this->maxState) {
+            this->currentState += timeUnit;
+        } else {
+            this->currentState = this->maxState;
+            this->calculateNextState();
+        }
+        this->log("SpaceTime set to tick #" + std::to_string(this->currentState));
+        return this;
+    }
+
+    SpaceTime* registerWorld(World* world)
+    {
+        this->now()->world = world;
+        return this;
+    }
+
+    SpaceTime* registerOrganisms(const std::vector<Organism*>& organisms)
+    {
+        this->now()->organisms = organisms;
+        return this;
+    }
 };
 
 #endif //_SpaceTimeClass_

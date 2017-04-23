@@ -12,11 +12,14 @@
 #define WORLD_WIDTH 48
 #define WORLD_HEIGHT 27
 #define ORGANISM_START_COUNT 5
-#define MS_PER_UPDATE 100
+#define MS_PER_UPDATE 50
 
 SpaceTime* buildSpaceTime()
 {
     SpaceTime* spaceTime = new SpaceTime();
+    spaceTime->registerLogCallback([](const std::string& info) {
+        Logger::write("[SpaceTime] " + info);
+    });
 
     World* world = new World(WORLD_WIDTH, WORLD_HEIGHT);
     world->registerLogCallback([](const std::string& info) {
@@ -52,25 +55,36 @@ int main(int argc, char** argv)
 {
 
     SpaceTime* sT = buildSpaceTime();
-    Viewer* renderer = new TwoDimensionsViewer();
+    Viewer* viewer = new TwoDimensionsViewer();
 
     unsigned long long previous = getCurrentTime();
     unsigned long long lag = 0;
 
-    while (renderer->isRunning())
+    while (viewer->isRunning())
     {
         unsigned long long current = getCurrentTime();
         unsigned long long elapsed = current - previous;
         previous = current;
         lag += elapsed;
 
+        viewer->processInput();
+
         while (lag >= MS_PER_UPDATE)
         {
-            sT->nextTick();
+            if(viewer->shouldTick()) {
+                if(viewer->fowardInTime()) {
+                    sT->foward();
+                } else {
+                    sT->backward();
+                }
+
+                viewer->ticked();
+            }
+
             lag -= MS_PER_UPDATE;
         }
 
-        renderer->draw(sT->now());
+        viewer->draw(sT->now());
     }
 
     return 1;

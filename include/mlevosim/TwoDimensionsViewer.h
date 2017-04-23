@@ -11,7 +11,8 @@ private:
 protected:
     bool running = false;
     sf::RenderWindow* window = nullptr;
-
+    bool nextTick = false;
+    bool backInTime = false;
 public:
     TwoDimensionsViewer()
     {
@@ -19,9 +20,43 @@ public:
         this->window = new sf::RenderWindow(sf::VideoMode(1280, 720), "ML Evo Sim");
     }
 
+    bool shouldTick()
+    {
+        return this->nextTick;
+    }
+
+    bool fowardInTime()
+    {
+        return !this->backInTime;
+    }
+    void ticked()
+    {
+        this->nextTick = false;
+    }
+
     bool isRunning()
     {
         return this->running;
+    }
+
+    void processInput()
+    {
+        sf::Event event;
+        while (window->pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed) {
+                window->close();
+                this->running = false;
+            } else if (event.type == sf::Event::KeyPressed) {
+                if (event.key.code == sf::Keyboard::Right) {
+                   this->nextTick = true;
+                   this->backInTime = false;
+                } else if (event.key.code == sf::Keyboard::Left) {
+                    this->nextTick = true;
+                    this->backInTime = true;
+                }
+            }
+        }
     }
 
     void draw(SpaceTime::State* state)
@@ -29,15 +64,6 @@ public:
         sf::RectangleShape tileShape({25.f, 25.f});
         sf::CircleShape organismShape(12.5f);
 
-
-        sf::Event event;
-        while (window->pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed) {
-                window->close();
-                this->running = false;
-            }
-        }
         window->clear();
 
         auto tiles = state->world->getTiles();
