@@ -81,7 +81,7 @@ public:
         } else {
             this->currentState = 0;
         }
-        this->log("SpaceTime set to tick #" + std::to_string(this->currentState));
+        this->log("Set to tick #" + std::to_string(this->currentState));
         return this;
     }
 
