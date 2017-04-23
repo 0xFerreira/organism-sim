@@ -18,6 +18,7 @@ public:
     {
         this->running = true;
         this->window = new sf::RenderWindow(sf::VideoMode(1280, 720), "ML Evo Sim");
+        this->window->setFramerateLimit(144);
     }
 
     bool shouldTick()
