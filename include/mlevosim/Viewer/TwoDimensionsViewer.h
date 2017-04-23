@@ -85,7 +85,7 @@ public:
 
         for(Organism* organism : state->organisms) {
             organismShape.setFillColor(sf::Color::Black);
-            organismShape.setPosition({14.0f + 26.f*organism->x, 8.0f + 26.f*organism->y});
+            organismShape.setPosition({14.0f + 26.f*organism->getPosition().x, 8.0f + 26.f*organism->getPosition().y});
             window->draw(organismShape);
         }
         window->display();

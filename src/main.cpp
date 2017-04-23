@@ -15,6 +15,33 @@
 #define ORGANISM_START_COUNT 5
 #define MS_PER_UPDATE 50
 
+/* Code Quality & Refactoring */
+//Add and work with namespaces
+//Move time control from main to twoDimensionsViewer
+//Move organism logic to brain class and polymorphics
+
+/* Core Features */
+//Give surrounding blocks and input info for organisms
+//Create an organism brain that tries to stay alive
+//Organism internal world map
+//Organism communication when on close tiles
+
+/* TwoDimensionsViewer Features */
+//Isometric artistic tiles
+//Much Better juicing/User Feedback
+//option to select organism and show info
+//option to select tile and show info
+
+/* Performance */
+//Make structs/classes pure when possible
+//Try to align memory for performance
+//Check loops for stupid memory reading
+
+/* Performance: Big as fuck work */
+//Check simd operations, only using 1 of 4 cores right now
+//Check openCL or nvidia alternative
+
+
 SpaceTime* buildSpaceTime()
 {
     SpaceTime* spaceTime = new SpaceTime();

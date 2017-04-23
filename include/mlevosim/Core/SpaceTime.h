@@ -37,8 +37,8 @@ protected:
 
         for(Organism* org : newOrganisms) {
             org->nextTick();
-            unsigned int tileEnergy = newWorld->tile(org->x, org->y)->getEnergy();
-            newWorld->tile(org->x, org->y)->setEnergy(tileEnergy*0.75);
+            unsigned int tileEnergy = newWorld->tile(org->getPosition().x, org->getPosition().y)->getEnergy();
+            newWorld->tile(org->getPosition().x, org->getPosition().y)->setEnergy(tileEnergy*0.75);
         }
 
 

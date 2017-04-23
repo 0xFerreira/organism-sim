@@ -8,8 +8,10 @@ class Loggable
 {
 private:
     std::function<void(const std::string&)> logCallback = nullptr;
+
 protected:
-    virtual ~Loggable() {}
+    Loggable() {};
+    ~Loggable() {}
 
     void log(const std::string& info)
     {

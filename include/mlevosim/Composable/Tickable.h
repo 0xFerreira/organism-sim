@@ -4,8 +4,11 @@
 class Tickable
 {
 private:
+
 protected:
+    Tickable() {}
     ~Tickable() {}
+
 public:
     virtual void nextTick() = 0;
 

@@ -5,8 +5,9 @@
 
 #include "mlevosim/Composable/Loggable.h"
 #include "mlevosim/Composable/Tickable.h"
+#include "mlevosim/Composable/Positionable.h"
 
-class Organism : public Loggable, public Tickable
+class Organism : public Loggable, public Tickable, public Positionable
 {
 private:
     static int id;
@@ -15,9 +16,6 @@ private:
 protected:
 
 public:
-
-    unsigned int x = 0;
-    unsigned int y = 0;
 
     Organism()
     {
@@ -42,18 +40,20 @@ public:
         std::uniform_real_distribution<float> dist(0, 9);
 
         float random = dist(mt);
+        Vector2i position = this->getPosition();
+
         if(dist(mt) > 4) {
-            if(random > 6 && this->x > 1) {
-                this->x += -1;
-            } else if(random > 3 &&this->x < 47) {
-                this->x += 1;
+            if(random > 6 && position.x > 1) {
+                this->move({-1, 0});
+            } else if(random > 3 && position.x < 47) {
+                this->move({1, 0});
             }
         } else {
             random = dist(mt);
-            if(random > 6 && this->y > 1) {
-                this->y += -1;
-            } else if(random > 3 && this->y < 26) {
-                this->y += 1;
+            if(random > 6 && position.y > 1) {
+                this->move({0, -1});
+            } else if(random > 3 && position.y < 26) {
+                this->move({0, 1});
             }
         }
         //this->log("nextTick for organism #" + std::to_string(this->selfId));
