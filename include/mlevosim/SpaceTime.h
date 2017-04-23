@@ -12,14 +12,15 @@
 
 class SpaceTime : public Loggable, public Tickable
 {
-private:
-
-protected:
+public:
     struct State
     {
         World* world = nullptr;
         std::vector<Organism*> organisms;
     };
+private:
+
+protected:
 
     std::map<unsigned int, State> states;
     unsigned int currentState = 0;

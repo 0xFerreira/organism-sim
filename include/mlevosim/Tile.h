@@ -1,7 +1,10 @@
 #ifndef _TileClass_
 #define _TileClass_
 
+#include <random>
+
 #include "mlevosim/Tickable.h"
+
 class Tile : public Tickable
 {
 private:
@@ -9,18 +12,22 @@ protected:
     unsigned int energy = 50;
     unsigned int minEnergy = 0;
     unsigned int maxEnergy = 100;
-    unsigned int energyRegen = 1;
+    unsigned int energyRegen = 3;
 
 public:
     Tile(unsigned int energy = 50,
          unsigned int minEnergy = 0,
          unsigned int maxEnergy = 100,
-         unsigned int energyRegen = 1)
+         unsigned int energyRegen = 3)
     {
-        this->energy = energy;
-        this->minEnergy = minEnergy;
-        this->maxEnergy = maxEnergy;
-        this->energyRegen = energyRegen;
+        std::random_device rd;
+        std::mt19937 mt(rd());
+        std::uniform_real_distribution<float> dist(0, 15);
+
+        this->energy = energy+dist(mt);
+        this->minEnergy = minEnergy+dist(mt)*5;
+        this->maxEnergy = maxEnergy+dist(mt)*10;
+        this->energyRegen = energyRegen+(dist(mt)-2);
     }
 
     unsigned int getEnergy()                    {return this->energy;}

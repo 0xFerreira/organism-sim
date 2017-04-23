@@ -66,6 +66,11 @@ public:
         return nullptr;
     }
 
+    const std::map<unsigned int, std::map<unsigned int, Tile*>>& getTiles()
+    {
+        return this->tiles;
+    }
+
     void nextTick()
     {
         for(unsigned int i = 0; i < this->width; i++) {

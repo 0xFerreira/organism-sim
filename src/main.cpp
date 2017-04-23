@@ -1,14 +1,18 @@
 #include <vector>
+#include <chrono>
 
 #include "mlevosim/Logger.h"
+
+#include "mlevosim/TwoDimensionsViewer.h"
 
 #include "mlevosim/SpaceTime.h"
 #include "mlevosim/World.h"
 #include "mlevosim/Organism.h"
 
-#define WORLD_WIDTH 10
-#define WORLD_HEIGHT 10
+#define WORLD_WIDTH 40
+#define WORLD_HEIGHT 25
 #define ORGANISM_START_COUNT 5
+#define MS_PER_UPDATE 25
 
 SpaceTime* buildSpaceTime()
 {
@@ -38,12 +42,36 @@ SpaceTime* buildSpaceTime()
     return spaceTime;
 }
 
+unsigned long long getCurrentTime()
+{
+    return std::chrono::system_clock::now().time_since_epoch() / std::chrono::milliseconds(1);
+}
+
+
 int main(int argc, char** argv)
 {
 
     SpaceTime* sT = buildSpaceTime();
+    Viewer* renderer = new TwoDimensionsViewer();
 
-    sT->nextTick();
+    unsigned long long previous = getCurrentTime();
+    unsigned long long lag = 0;
+
+    while (renderer->isRunning())
+    {
+        unsigned long long current = getCurrentTime();
+        unsigned long long elapsed = current - previous;
+        previous = current;
+        lag += elapsed;
+
+        while (lag >= MS_PER_UPDATE)
+        {
+            sT->nextTick();
+            lag -= MS_PER_UPDATE;
+        }
+
+        renderer->draw(sT->now());
+    }
 
     return 1;
 }
