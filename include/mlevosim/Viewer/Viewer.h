@@ -7,15 +7,17 @@ class Viewer
 {
 private:
 protected:
+    SpaceTime* spaceTime = nullptr;
+
     Viewer() {}
     ~Viewer() {}
 public:
-    virtual void draw(SpaceTime::State* state, float deltaTime) = 0;
-    virtual bool isRunning() = 0;
-    virtual void processInput() = 0;
-    virtual bool shouldTick() = 0;
-    virtual void ticked() = 0;
-    virtual bool fowardInTime() = 0;
+    virtual void run() = 0;
+
+    void registerSpaceTime(SpaceTime* spaceTime)
+    {
+        this->spaceTime = spaceTime;
+    }
 };
 
 #endif //_ViewerClass_

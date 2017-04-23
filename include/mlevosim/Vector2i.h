@@ -1,3 +1,6 @@
+#ifndef _Vector2iStruct_
+#define _Vector2iStruct_
+
 struct Vector2i
 {
     int x = 0;
@@ -49,3 +52,4 @@ struct Vector2i
         return *this;
     }
 };
+#endif //_Vector2iStruct_

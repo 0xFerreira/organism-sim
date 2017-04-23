@@ -63,6 +63,13 @@ public:
         return &this->states[this->currentState];
     }
 
+    State* past()
+    {
+        if((int)this->currentState-1 >= 0) {
+            return &this->states[this->currentState-1];
+        }
+        return this->now();
+    }
     //Very Naive implementation
     int usedMemory()
     {

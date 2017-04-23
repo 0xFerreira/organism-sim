@@ -12,33 +12,11 @@ public:
     {
     }
 
-    bool shouldTick()
+    void run()
     {
-        return true;
-    }
-
-    bool fowardInTime()
-    {
-        return true;
-    }
-
-    void ticked()
-    {
-
-    }
-
-    bool isRunning()
-    {
-        return true;
-    }
-
-    void processInput()
-    {
-
-    }
-
-    void draw(SpaceTime::State* state, float deltaTime)
-    {
+        while(true) {
+            this->spaceTime->foward();
+        }
 
     }
 };

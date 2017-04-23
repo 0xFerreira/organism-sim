@@ -1,5 +1,4 @@
 #include <vector>
-#include <chrono>
 
 #include "mlevosim/Logger.h"
 
@@ -13,12 +12,14 @@
 #define WORLD_WIDTH 48
 #define WORLD_HEIGHT 27
 #define ORGANISM_START_COUNT 5
-#define MS_PER_UPDATE 50
 
 /* Code Quality & Refactoring */
-//Add and work with namespaces
 //Move time control from main to twoDimensionsViewer
+//Add and work with namespaces
 //Move organism logic to brain class and polymorphics
+//Check warnings and static analysis
+//Compiler flags
+
 
 /* Core Features */
 //Give surrounding blocks and input info for organisms
@@ -42,8 +43,9 @@
 //Check openCL or nvidia alternative
 
 
-SpaceTime* buildSpaceTime()
+int main(int argc, char** argv)
 {
+
     SpaceTime* spaceTime = new SpaceTime();
     spaceTime->registerLogCallback([](const std::string& info) {
         Logger::write("[SpaceTime] " + info);
@@ -70,52 +72,10 @@ SpaceTime* buildSpaceTime()
     spaceTime->registerWorld(world);
     spaceTime->registerOrganisms(organisms);
 
-    return spaceTime;
-}
-
-unsigned long long getCurrentTime()
-{
-    return std::chrono::system_clock::now().time_since_epoch() / std::chrono::milliseconds(1);
-}
-
-
-int main(int argc, char** argv)
-{
-
-    SpaceTime* sT = buildSpaceTime();
     Viewer* viewer = new TwoDimensionsViewer();
-    //Viewer* viewer = new NoViewer();
+    viewer->registerSpaceTime(spaceTime);
 
-    unsigned long long previous = getCurrentTime();
-    unsigned long long lag = 0;
-
-    while (viewer->isRunning())
-    {
-        unsigned long long current = getCurrentTime();
-        unsigned long long elapsed = current - previous;
-        previous = current;
-        lag += elapsed;
-
-        viewer->processInput();
-
-        while (lag >= MS_PER_UPDATE)
-        {
-            if(viewer->shouldTick()) {
-                if(viewer->fowardInTime()) {
-                    sT->foward();
-                } else {
-                    sT->backward();
-                }
-
-                viewer->ticked();
-            }
-
-            lag -= MS_PER_UPDATE;
-        }
-
-        float deltaTime = (float)lag/(float)MS_PER_UPDATE;
-        viewer->draw(sT->now(), deltaTime);
-    }
+    viewer->run();
 
     return 1;
 }
