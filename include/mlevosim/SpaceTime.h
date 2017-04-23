@@ -93,7 +93,7 @@ public:
             this->currentState = this->maxState;
             this->calculateNextState();
         }
-        this->log("SpaceTime set to tick #" + std::to_string(this->currentState));
+        this->log("Set to tick #" + std::to_string(this->currentState));
         return this;
     }
 
