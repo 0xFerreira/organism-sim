@@ -36,9 +36,18 @@ protected:
         newWorld->nextTick();
 
         for(Organism* org : newOrganisms) {
-            org->nextTick();
-            unsigned int tileEnergy = newWorld->tile(org->getPosition().x, org->getPosition().y)->getEnergy();
-            newWorld->tile(org->getPosition().x, org->getPosition().y)->setEnergy(tileEnergy*0.75);
+            if(org->isAlive()) {
+                org->nextTick();
+                
+                unsigned int tileEnergy = newWorld->tile(org->getPosition().x, org->getPosition().y)->getEnergy();
+                newWorld->tile(org->getPosition().x, org->getPosition().y)->setEnergy(tileEnergy*0.75);
+                org->receiveEnergy(tileEnergy*0.25);
+
+                if(org->getEnergy() >= 100) {
+                    org->setEnergy(50);
+                    newOrganisms.push_back(org->clone());
+                }
+            }
         }
 
 

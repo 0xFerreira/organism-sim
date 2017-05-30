@@ -105,8 +105,13 @@ public:
         }
 
         for(Organism* organism : this->spaceTime->now()->organisms) {
+        
             this->organismShape.setFillColor(sf::Color::Black);
 
+            if(!organism->isAlive()) {
+                this->organismShape.setFillColor(sf::Color(255, 0, 0, 100));
+            }
+            
             Vector2i lastPosition = organism->getLastPosition();
             Vector2i position = organism->getPosition();
 
