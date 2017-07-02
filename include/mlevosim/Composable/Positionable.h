@@ -8,34 +8,21 @@ class Positionable
 private:
     Vector2i position;
     Vector2i lastPosition;
-    bool transitionDone = false;
 protected:
     Positionable() {};
     ~Positionable() {}
 
 public:
 
-    bool isTransitionDone()
-    {
-        return this->transitionDone;
-    }
-
-    void setTransitionDone()
-    {
-        this->transitionDone = true;
-    }
-
     void setPosition(const Vector2i& position)
     {
         this->lastPosition = this->position;
-        this->transitionDone = false;
         this->position = position;
     }
 
     void move(const Vector2i& positionDelta)
     {
         this->lastPosition = this->position;
-        this->transitionDone = false;
         this->position.x += positionDelta.x;
         this->position.y += positionDelta.y;
     }
@@ -43,6 +30,11 @@ public:
     Vector2i getPosition()
     {
         return this->position;
+    }
+
+    void setLastPosition(const Vector2i& position)
+    {
+        this->lastPosition = position;
     }
 
     Vector2i getLastPosition()

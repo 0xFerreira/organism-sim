@@ -19,13 +19,15 @@ protected:
     bool shouldTick   = false;
     bool fowardInTime = true;
 
+    unsigned long long animationCounter = 0;
+
     sf::RectangleShape tileShape;
     sf::CircleShape organismShape;
 public:
     TwoDimensionsViewer()
     {
         this->running = true;
-        this->window = new sf::RenderWindow(sf::VideoMode(1280, 720), "ML Evo Sim");
+        this->window = new sf::RenderWindow(sf::VideoMode(1280, 720), "ML Evo Sim", sf::Style::Default, sf::ContextSettings(24,8,16));
         this->window->setFramerateLimit(200);
 
         this->tileShape = sf::RectangleShape({25.f, 25.f});
@@ -49,6 +51,7 @@ public:
             while (lag >= MS_PER_UPDATE)
             {
                 if(this->shouldTick) {
+                    this->animationCounter = 0;
                     if(this->fowardInTime) {
                         this->spaceTime->foward();
                     } else {
@@ -60,6 +63,8 @@ public:
 
                 lag -= MS_PER_UPDATE;
             }
+            this->animationCounter += elapsed;
+
             this->draw((float)lag/(float)MS_PER_UPDATE);
         }
     }
@@ -105,30 +110,35 @@ public:
         }
 
         for(Organism* organism : this->spaceTime->now()->organisms) {
-        
-            this->organismShape.setFillColor(sf::Color::Black);
 
-            if(!organism->isAlive()) {
-                this->organismShape.setFillColor(sf::Color(255, 0, 0, 100));
-            }
+            this->organismShape.setOutlineThickness(2.0f);
+            this->organismShape.setOutlineColor(sf::Color::Black);
+
+            this->organismShape.setFillColor(organism->getColor());
+            this->organismShape.setScale({1.0f, 1.0f});
             
             Vector2i lastPosition = organism->getLastPosition();
             Vector2i position = organism->getPosition();
 
             float x = 0.0f;
             float y = 0.0f;
-            if(!organism->isTransitionDone()) {
-                x = lastPosition.x + (position.x - lastPosition.x)*deltaTime;
-                y = lastPosition.y + (position.y - lastPosition.y)*deltaTime;
-                if(deltaTime > 0.9) {
-                    organism->setTransitionDone();
-                }
+
+            if(this->animationCounter < 500) {
+                x = lastPosition.x + (position.x - lastPosition.x)*(this->animationCounter/500.f);
+                y = lastPosition.y + (position.y - lastPosition.y)*(this->animationCounter/500.f);
             } else {
                 x =  position.x;
                 y =  position.y;
             }
 
             this->organismShape.setPosition({14.0f + 26.f*x, 8.0f + 26.f*y});
+
+            if(!organism->isAlive()) {
+                this->organismShape.setFillColor(sf::Color(255, 0, 0, 100));
+                this->organismShape.setScale({0.5f, 0.5f});
+                this->organismShape.setPosition({21.0f + 26.f*x, 14.0f + 26.f*y});
+            }
+
             window->draw(this->organismShape);
         }
         window->display();

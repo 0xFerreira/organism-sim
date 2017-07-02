@@ -29,12 +29,17 @@ protected:
         World* newWorld = this->states[this->currentState].world->clone();
 
         std::vector<Organism*> newOrganisms;
-        for(Organism* org : this->states[this->currentState].organisms) {
-            newOrganisms.push_back(org->clone());
+        for(Organism* org1 : this->states[this->currentState].organisms) {
+            newOrganisms.push_back(org1->clone());
         }
 
-        newWorld->nextTick();
+        newWorld->nextTick();   
+        std::random_device rd;
+        std::mt19937 mt(rd());
+        std::uniform_real_distribution<float> dist(0.90f, 1.0f);
 
+        std::uniform_real_distribution<float> mDist(0, 1);
+        std::vector<Organism*> newClonedOrganisms;
         for(Organism* org : newOrganisms) {
             if(org->isAlive()) {
                 org->nextTick();
@@ -45,14 +50,21 @@ protected:
 
                 if(org->getEnergy() >= 100) {
                     org->setEnergy(50);
-                    newOrganisms.push_back(org->clone());
+                    auto orgClone = org->clone();
+                    orgClone->setColor(sf::Color(org->getColor().r*((dist(mt) > 0.95) ? -dist(mt) : dist(mt)), org->getColor().g*((dist(mt) > 0.95) ? -dist(mt) : dist(mt)), org->getColor().b*((dist(mt) > 0.95) ? -dist(mt) : dist(mt)), org->getColor().a));
+                    orgClone->move({static_cast<int>(mDist(mt)), static_cast<int>(mDist(mt))});
+                    newClonedOrganisms.push_back(orgClone);
                 }
             }
         }
 
+        std::vector<Organism*> mergedOrganisms;
+        mergedOrganisms.reserve( newOrganisms.size() + newClonedOrganisms.size() );
+        mergedOrganisms.insert( mergedOrganisms.end(), newOrganisms.begin(), newOrganisms.end() );
+        mergedOrganisms.insert( mergedOrganisms.end(), newClonedOrganisms.begin(),newClonedOrganisms.end() );
 
         this->states[this->currentState+1].world = newWorld;
-        this->states[this->currentState+1].organisms = newOrganisms;
+        this->states[this->currentState+1].organisms = mergedOrganisms;
 
         this->currentState++;
 

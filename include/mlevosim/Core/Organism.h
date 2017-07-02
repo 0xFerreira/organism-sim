@@ -10,23 +10,35 @@
 class Organism : public Loggable, public Tickable, public Positionable
 {
 private:
-    static int id;
-    unsigned int selfId = 0;
     float energy = 50;
     bool dead = false;
+
+    sf::Color color;
 protected:
 
 public:
 
     Organism()
     {
-        this->selfId = Organism::id;
-        Organism::id++;
+        std::random_device rd;
+        std::mt19937 mt(rd());
+        std::uniform_real_distribution<float> dist(0, 255);
+
+        this->setColor(sf::Color(dist(mt), dist(mt), dist(mt), 255));
     }
 
     Organism* clone()
     {
-        return new Organism(*this);
+        Organism* org = new Organism();
+
+        org->energy = this->energy;
+        org->dead = this->dead;
+
+        org->setColor(this->getColor());
+        auto lP = this->getLastPosition();
+        org->setPosition(this->getPosition());
+        org->setLastPosition(lP);
+        return org;
     }
 
     bool isAlive()
@@ -34,6 +46,16 @@ public:
         return !this->dead;
     }
     
+    void setColor(sf::Color color)
+    {
+        this->color = color;
+    }
+
+    sf::Color getColor()
+    {
+        return this->color;
+    }
+
     float getEnergy()
     {
         return this->energy;
@@ -71,7 +93,7 @@ public:
         float randomD = dist(mt);
         if(randomD > 6) {
             if(this->energy > 15) {
-                if(random > 6 && position.x > 1) {
+                if(random > 6 && position.x > 0) {
                     this->move({-1, 0});
                 } else if(random > 3 && position.x < 47) {
                     this->move({1, 0});
@@ -80,7 +102,7 @@ public:
             this->energy -= 15;
         } else if(randomD > 2) {
             if(this->energy > 15) {
-                if(random > 6 && position.y > 1) {
+                if(random > 6 && position.y > 0) {
                     this->move({0, -1});
                 } else if(random > 3 && position.y < 26) {
                     this->move({0, 1});
@@ -88,8 +110,11 @@ public:
             }
             this->energy -= 15;
         }
+
+        if(position.x == this->getPosition().x && this->getPosition().y == position.y) {
+            this->setLastPosition(this->getPosition());
+        }
         //this->log("nextTick for organism #" + std::to_string(this->selfId));
     }
 };
-int Organism::id = 1;
 #endif // _Organism_
