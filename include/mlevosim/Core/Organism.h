@@ -45,7 +45,7 @@ public:
     {
         return !this->dead;
     }
-    
+
     void setColor(sf::Color color)
     {
         this->color = color;
@@ -95,7 +95,7 @@ public:
             if(this->energy > 15) {
                 if(random > 6 && position.x > 0) {
                     this->move({-1, 0});
-                } else if(random > 3 && position.x < 47) {
+                } else if(random > 3 && position.x < WORLD_WIDTH-1) {
                     this->move({1, 0});
                 }
             }
@@ -104,7 +104,7 @@ public:
             if(this->energy > 15) {
                 if(random > 6 && position.y > 0) {
                     this->move({0, -1});
-                } else if(random > 3 && position.y < 26) {
+                } else if(random > 3 && position.y < WORLD_HEIGHT-1) {
                     this->move({0, 1});
                 }
             }

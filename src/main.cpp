@@ -1,5 +1,11 @@
 #include <vector>
 
+//#define WORLD_WIDTH 48
+//#define WORLD_HEIGHT 27
+#define WORLD_WIDTH 73
+#define WORLD_HEIGHT 41
+#define ORGANISM_START_COUNT 5
+
 #include "mlevosim/Logger.h"
 
 #include "mlevosim/Viewer/TwoDimensionsViewer.h"
@@ -8,10 +14,6 @@
 #include "mlevosim/Core/SpaceTime.h"
 #include "mlevosim/Core/World.h"
 #include "mlevosim/Core/Organism.h"
-
-#define WORLD_WIDTH 48
-#define WORLD_HEIGHT 27
-#define ORGANISM_START_COUNT 5
 
 /* Code Quality & Refactoring */
 //Move time control from main to twoDimensionsViewer
@@ -60,6 +62,10 @@ int main(int argc, char** argv)
 
     std::vector<Organism*> organisms;
 
+	std::random_device rd;
+	std::mt19937 mt(rd());
+	std::uniform_real_distribution<float> dist(0, WORLD_WIDTH-1);
+	std::uniform_real_distribution<float> dist2(0, WORLD_HEIGHT-1);
     for(unsigned int i=0;i<ORGANISM_START_COUNT;i++) {
         Organism* org = new Organism();
         org->registerLogCallback([](const std::string& info) {
@@ -67,6 +73,7 @@ int main(int argc, char** argv)
         });
 
         organisms.push_back(org);
+		org->setPosition({static_cast<int>(dist(mt)), static_cast<int>(dist2(mt))});
     }
 
     spaceTime->registerWorld(world);

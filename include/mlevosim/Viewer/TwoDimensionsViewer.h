@@ -3,6 +3,7 @@
 
 #define MS_PER_UPDATE 50
 
+#include <algorithm>
 
 #include <SFML/Graphics.hpp>
 
@@ -27,8 +28,9 @@ public:
     TwoDimensionsViewer()
     {
         this->running = true;
-        this->window = new sf::RenderWindow(sf::VideoMode(1280, 720), "ML Evo Sim", sf::Style::Default, sf::ContextSettings(24,8,16));
-        this->window->setFramerateLimit(200);
+        //this->window = new sf::RenderWindow(sf::VideoMode(1280, 720), "ML Evo Sim", sf::Style::Default, sf::ContextSettings(24,8,16));
+		this->window = new sf::RenderWindow(sf::VideoMode(1920, 1080), "ML Evo Sim", sf::Style::Fullscreen, sf::ContextSettings(24,8,16));
+        this->window->setFramerateLimit(60);
 
         this->tileShape = sf::RectangleShape({25.f, 25.f});
         this->organismShape = sf::CircleShape(12.5f);
@@ -39,6 +41,7 @@ public:
         unsigned long long previous = Time::getCurrentTime();
         unsigned long long lag = 0;
 
+		unsigned long long autoFoward = 0;
         while (this->running)
         {
             unsigned long long current = Time::getCurrentTime();
@@ -50,21 +53,22 @@ public:
 
             while (lag >= MS_PER_UPDATE)
             {
-                if(this->shouldTick) {
+                if(this->shouldTick || autoFoward > 500) {
                     this->animationCounter = 0;
-                    if(this->fowardInTime) {
+                    if(this->fowardInTime || autoFoward > 500) {
                         this->spaceTime->foward();
                     } else {
                         this->spaceTime->backward();
                     }
 
                     this->shouldTick = false;
+					autoFoward = 0;
                 }
 
                 lag -= MS_PER_UPDATE;
             }
             this->animationCounter += elapsed;
-
+			autoFoward  += elapsed;
             this->draw((float)lag/(float)MS_PER_UPDATE);
         }
     }
@@ -84,6 +88,20 @@ public:
                 } else if (event.key.code == sf::Keyboard::Left) {
                     this->shouldTick = true;
                     this->fowardInTime = false;
+                } else if (event.key.code == sf::Keyboard::K) {
+					std::vector<int> toDelete;
+					int index = 0;
+					for(Organism* organism : this->spaceTime->now()->organisms) {
+						if(!organism->isAlive()) {
+							toDelete.emplace_back(index);
+						}
+						index++;
+					}
+					std::reverse(toDelete.begin(),toDelete.end());
+
+					for(int deleteIndex : toDelete) {
+						this->spaceTime->now()->organisms.erase(this->spaceTime->now()->organisms.begin() + deleteIndex);
+					}
                 }
             }
         }
@@ -101,7 +119,7 @@ public:
             y = 0;
             for(auto& tile : row.second) {
                 float energyCapacity = (float)tile.second->getEnergy()/(float)tile.second->getMaxEnergy();
-                this->tileShape.setFillColor(sf::Color(255*(1-energyCapacity), 255*energyCapacity, 255*(1-energyCapacity*0.5)));
+                this->tileShape.setFillColor(sf::Color(255*energyCapacity, 255*energyCapacity, 255*energyCapacity));
                 this->tileShape.setPosition({14.0f + 26.f*x, 8.0f + 26.f*y});
                 window->draw(this->tileShape);
                 y++;
@@ -116,7 +134,7 @@ public:
 
             this->organismShape.setFillColor(organism->getColor());
             this->organismShape.setScale({1.0f, 1.0f});
-            
+
             Vector2i lastPosition = organism->getLastPosition();
             Vector2i position = organism->getPosition();
 
@@ -134,7 +152,7 @@ public:
             this->organismShape.setPosition({14.0f + 26.f*x, 8.0f + 26.f*y});
 
             if(!organism->isAlive()) {
-                this->organismShape.setFillColor(sf::Color(255, 0, 0, 100));
+                this->organismShape.setFillColor(sf::Color(255, 0, 0, 80));
                 this->organismShape.setScale({0.5f, 0.5f});
                 this->organismShape.setPosition({21.0f + 26.f*x, 14.0f + 26.f*y});
             }
