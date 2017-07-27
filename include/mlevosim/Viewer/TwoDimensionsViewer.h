@@ -28,8 +28,8 @@ public:
     TwoDimensionsViewer()
     {
         this->running = true;
-        //this->window = new sf::RenderWindow(sf::VideoMode(1280, 720), "ML Evo Sim", sf::Style::Default, sf::ContextSettings(24,8,16));
-		this->window = new sf::RenderWindow(sf::VideoMode(1920, 1080), "ML Evo Sim", sf::Style::Fullscreen, sf::ContextSettings(24,8,16));
+        this->window = new sf::RenderWindow(sf::VideoMode(1280, 720), "ML Evo Sim", sf::Style::Default, sf::ContextSettings(24,8,16));
+		//this->window = new sf::RenderWindow(sf::VideoMode(1920, 1080), "ML Evo Sim", sf::Style::Fullscreen, sf::ContextSettings(24,8,16));
         this->window->setFramerateLimit(60);
 
         this->tileShape = sf::RectangleShape({25.f, 25.f});

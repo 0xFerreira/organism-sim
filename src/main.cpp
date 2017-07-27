@@ -1,9 +1,9 @@
 #include <vector>
 
-//#define WORLD_WIDTH 48
-//#define WORLD_HEIGHT 27
-#define WORLD_WIDTH 73
-#define WORLD_HEIGHT 41
+#define WORLD_WIDTH 48
+#define WORLD_HEIGHT 27
+//#define WORLD_WIDTH 73
+//#define WORLD_HEIGHT 41
 #define ORGANISM_START_COUNT 5
 
 #include "mlevosim/Logger.h"
