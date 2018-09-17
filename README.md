@@ -1,2 +1,2 @@
-# ML EVO SIM
-Machine Learning Evolution Simulation
+# organism-sim
+Study on organism simulation
